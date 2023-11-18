@@ -28,8 +28,9 @@ R2, t2 = np.eye(3), np.zeros((3, 1))
 
 F = eightpoint(pts1, pts2, M)
 
-displayEpipolarF(img1, img2, F)
 
+#displayEpipolarF(img1, img2, F)
+epipolarMatchGUI(img1,img2,F)
 os.makedirs('../results/extrinsics', exist_ok=True)
 # save extrinsic parameters for dense reconstruction
 np.save('../results/extrinsics', {'R1': R1, 't1': t1, 'R2': R2, 't2': t2})
