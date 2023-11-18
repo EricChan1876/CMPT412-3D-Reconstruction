@@ -10,18 +10,26 @@ from camera2 import camera2
 from triangulate import triangulate
 from displayEpipolarF import displayEpipolarF
 from epipolarMatchGUI import epipolarMatchGUI
+import os 
+
+
 
 # Load images and points
 img1 = cv2.imread('../data/im1.png')
 img2 = cv2.imread('../data/im2.png')
 pts = np.load('../data/someCorresp.npy', allow_pickle=True).tolist()
-pts1 = pts['pts1']
-pts2 = pts['pts2']
-M = pts['M']
+pts1 = pts['pts1']      #(x,y) coordinate in piture 1
+pts2 = pts['pts2']      #(x,y) coordinate in piture 2
+M = pts['M']            #scalar parameter
 
 # write your code here
 R1, t1 = np.eye(3), np.zeros((3, 1))
 R2, t2 = np.eye(3), np.zeros((3, 1))
 
+F = eightpoint(pts1, pts2, M)
+
+displayEpipolarF(img1, img2, F)
+
+os.makedirs('../results/extrinsics', exist_ok=True)
 # save extrinsic parameters for dense reconstruction
 np.save('../results/extrinsics', {'R1': R1, 't1': t1, 'R2': R2, 't2': t2})
