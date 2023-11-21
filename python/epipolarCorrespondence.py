@@ -11,7 +11,7 @@ def epipolarCorrespondence(im1, im2, F, pts1):
     Returns:
         pts2:   coordinates of points in image 2
     """
-    print (pts1)
+    
     pts1 = np.hstack((pts1, np.ones((pts1.shape[0], 1))))
     pts1 = pts1.T
     
@@ -45,7 +45,8 @@ def epipolarCorrespondence(im1, im2, F, pts1):
         y = int(l[0] * x + l[2])
         pt2 = [x, y]
 
-        try:
+        # Check if the patch is within the bounds of the image
+        if y - 3 >= 0 and y + 4 <= im2.shape[0] and x - 3 >= 0 and x + 4 <= im2.shape[1]:
             # Extract patch from im2 and calculate distance
             patches2 = im2[y - 3:y + 4, x - 3:x + 4]
             distance = np.sqrt(np.sum((patches2 - patches1) ** 2))
@@ -54,10 +55,7 @@ def epipolarCorrespondence(im1, im2, F, pts1):
             if distance < minDistance:
                 minDistance = distance
                 pts2 = pt2
-        except IndexError:
-            # Skip indices outside the image
-            continue
         
-    print (pts2)
+    
     pts2 = np.array(pts2).reshape(1, -1)
     return pts2
